@@ -1,8 +1,6 @@
 # StEfficiencyMaker
 
-**STAR Collaboration**
-
-**Relativistic Heavy Ion Collider, BNL**
+**Nick Elsey**
 
 Produces efficiency corrections from miniMC files.  
 
