@@ -226,7 +226,7 @@ int StEfficiencyMaker::InitOutput() {
   }
   
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
-  refzdc_ = new TH1D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, 0, 100);
+  refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, 0, 100);
 
   return kStOK;
 }
