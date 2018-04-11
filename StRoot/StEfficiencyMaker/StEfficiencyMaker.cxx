@@ -22,6 +22,8 @@ StEfficiencyMaker::StEfficiencyMaker(TChain* mcTree, std::string outputFile) {
   refcent_string_ = std::vector<std::string>{"0-5%", "5-10%", "10-20%", "20-30%",
                                             "30-40%", "40-50%", "50-60%", "60-70%",
                                             "70-80%", "80-90%", "90-100%"};
+  
+  
   muDstMaker_ = nullptr;
   muDst_ = nullptr;
   muInputEvent_ = nullptr;
@@ -132,6 +134,9 @@ Int_t StEfficiencyMaker::Make() {
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
   
+  refmult_->Fill(refmult);
+  zdcRate_->Fill(zdcAnd);
+  
   // get the proper histograms
   TH3D* mc = mc_[zdcBin][centBin];
   TH3D* match = matched_[zdcBin][centBin];
@@ -177,6 +182,8 @@ Int_t StEfficiencyMaker::Finish() {
   }
   
   nMCvsMatched_->Write();
+  refmult_->Write();
+  zdcRate_->Write();
   
   out_->Close();
   return kStOk;
@@ -221,7 +228,9 @@ int StEfficiencyMaker::InitOutput() {
   }
   
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
-  
+  refmult_ = new TH1D("refmult", ";refmult", 800, 0, 800);
+  zdcRate_ = new TH1D("zdcrate", ";zdc coincidence [khz]", 100, 0, 100);
+
   return kStOK;
 }
 
