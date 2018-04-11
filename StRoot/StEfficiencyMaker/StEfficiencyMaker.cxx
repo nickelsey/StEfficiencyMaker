@@ -32,7 +32,7 @@ StEfficiencyMaker::StEfficiencyMaker(TChain* mcTree, std::string outputFile) {
 }
 
 StEfficiencyMaker::~StEfficiencyMaker() {
-  LOG_INFO << "in destructor" << endm;
+  
 }
 
 int StEfficiencyMaker::Init() {
@@ -125,7 +125,7 @@ Int_t StEfficiencyMaker::Make() {
   int zdcBin = -1;
   for (unsigned i = 0; i < lumi_axis_.nBins; ++i) {
     if (zdcAnd > lumi_axis_.low + i * lumi_axis_.width() &&
-        zdcAnd <= lumi_axis_.high + (i + 1) * lumi_axis_.width()) {
+        zdcAnd <= lumi_axis_.low + (i + 1) * lumi_axis_.width()) {
       zdcBin = i;
       break;
     }

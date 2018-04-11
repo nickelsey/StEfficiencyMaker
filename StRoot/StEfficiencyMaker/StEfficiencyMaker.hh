@@ -86,10 +86,9 @@ private:
   std::vector<std::vector<TH3D*>> mc_;
   std::vector<std::vector<TH3D*>> matched_;
   
+  TH2D* nMCvsMatched_;
   TH1D* refmult_;
   TH1D* zdcRate_;
-  
-  TH2D* nMCvsMatched_;
   
   axisDef lumi_axis_;
   axisDef cent_axis_;
