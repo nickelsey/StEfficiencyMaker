@@ -38,7 +38,7 @@ void produce_efficiency(int nEvents = 1e9,
   while (std::getline(file, line)) {
     mcChain->Add(line.c_str());
   }
-  std::string outname = nametag + ".root";
+  std::string outname = std::string(nametag) + ".root";
   StEfficiencyMaker* eff_maker = new StEfficiencyMaker(mcChain, outname);
 
   // for each event, print the memory usage
