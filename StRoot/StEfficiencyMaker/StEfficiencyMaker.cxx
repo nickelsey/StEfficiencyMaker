@@ -134,8 +134,7 @@ Int_t StEfficiencyMaker::Make() {
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
   
-  refmult_->Fill(refmult);
-  zdcRate_->Fill(zdcAnd);
+  refzdc_->Fill(refmult, zdcAnd);
   
   // get the proper histograms
   TH3D* mc = mc_[zdcBin][centBin];
@@ -182,8 +181,7 @@ Int_t StEfficiencyMaker::Finish() {
   }
   
   nMCvsMatched_->Write();
-  refmult_->Write();
-  zdcRate_->Write();
+  refzdc_->Write();
   
   out_->Close();
   return kStOk;
@@ -228,8 +226,7 @@ int StEfficiencyMaker::InitOutput() {
   }
   
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
-  refmult_ = new TH1D("refmult", ";refmult", 800, 0, 800);
-  zdcRate_ = new TH1D("zdcrate", ";zdc coincidence [khz]", 100, 0, 100);
+  refzdc_ = new TH1D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, 0, 100);
 
   return kStOK;
 }
