@@ -1,0 +1,47 @@
+# ignore lists for git
+
+# that crap emacs generates
+*~
+
+# build directory
+build
+
+# object files
+*.slo
+*.lo
+*.o
+*.cuo
+*.obj
+
+# dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# ROOT files
+*.root
+
+# logs
+*.err
+*.log
+*.out
+log
+
+# compiled python
+*.pyc
+*.pyd
+
+# apple DS_Store stuff
+.DS_Store*
+._*

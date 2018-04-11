@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE note [
+<!ENTITY MUFILE "/global/homes/e/elsey/StEfficiencyMaker/list/mu1.list">
+<!ENTITY MCFILE "/global/homes/e/elsey/StEfficiencyMaker/list/mc1.list">
+<!ENTITY PROD "SL17d_embed">
+<!ENTITY ROOTDIR "/global/homes/e/elsey/StEfficiencyMaker">
+<!ENTITY OUTDIR "/global/homes/e/elsey/StEfficiencyMaker/out">
+]>
+
+<!--             STAR Collaboration - Nick Elsey             -->
+<!--
+
+ OUTDIR/tmplogs must be created before the script is submitted
+ 
+ To Use: Settings
+ 
+ MUFILE:     text file with list of muDst files
+ 
+ MCFILE:     text file with list of corresponding minimc files (does not
+             need to be in the same order as the MUFILE list, but it will be
+             significantly faster if it is)
+ 
+ PROD:       the library that the muDsts/minimcs were produced with
+ 
+ ROOTDIR:    root directory of StEfficiencyMaker code
+ 
+ OUTDIR:     target output directory
+ 
+ -->
+
+<!-- <job fileListSyntax="xrootd" inputOrder="runnumber" splitBy="runnumber" maxEvents="15000" simulateSubmission="true"> -->
+<job>
+
+ <command>
+   
+    starver &PROD;
+   
+    setenv LOG &OUTDIR;/logs/log
+    setenv ERR &OUTDIR;/logs/err
+    setenv OUT &OUTDIR;/out/
+
+    mkdir -p $LOG
+    mkdir -p $ERR
+    mkdir -p $OUT
+    
+    setenv NUMBER `wc -l &MUFILE;`
+    
+    root4star -q -b produce_efficiency.cxx\(1e9,\"$FILELIST\",\&MUFILE;,\&MCFILE;,\"$JOBID\",$NUMBER)
+
+    rm &OUTDIR;/tmplogs/$JOBID.*
+	
+    mv $SCRATCH/*.root $OUT/
+ </command>
+
+ <SandBox installer="ZIP">
+	 <Package name="Efficiency_&PROD;">
+                <File>file:&ROOTDIR;/macros/produce_efficiency.cxx</File>
+                <File>file:&ROOTDIR;/libs/libStEfficiencyMaker.so</File>
+         </Package>
+ </SandBox>
+ 
+ <Generator>
+   <Location>&ROOTDIR;/scheduler/report/</Location>
+   <ScriptLocation>&ROOTDIR;/scheduler/csh/</ScriptLocation>
+   <ListLocation>&ROOTDIR;/scheduler/list/</ListLocation>
+ </Generator>
+
+<stdout URL="file:&OUTDIR;/tmplogs/$JOBID.log" />
+<stderr URL="file:&OUTDIR;/tmplogs/$JOBID.err" />
+
+</job>
+
+
