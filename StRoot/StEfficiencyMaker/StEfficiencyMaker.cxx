@@ -28,6 +28,9 @@ StEfficiencyMaker::StEfficiencyMaker(TChain* mcTree, std::string outputFile) {
   muDst_ = nullptr;
   muInputEvent_ = nullptr;
   
+  minFit_ = 20;
+  maxDCA_ = 3.0;
+  
   out_ = new TFile(outputFile.c_str(), "RECREATE");
 }
 
@@ -156,6 +159,12 @@ Int_t StEfficiencyMaker::Make() {
   
   while ((pair = (StMiniMcPair*) next_match())) {
     count_pair++;
+    if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
+      continue;
+    
+    fitpt_->Fill(pair->fitPts());
+    dca_->Fill(pair->dcaGl());
+    
     match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
     
   }
@@ -182,6 +191,8 @@ Int_t StEfficiencyMaker::Finish() {
   
   nMCvsMatched_->Write();
   refzdc_->Write();
+  fitpt_->Write();
+  dca_->Write();
   
   out_->Close();
   return kStOk;
@@ -227,7 +238,10 @@ int StEfficiencyMaker::InitOutput() {
   
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
   refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, 0, 100);
-
+  fitpt_ = new TH1D("fitpoints", ";fit points", 50, 0, 50);
+  dca_ = new TH1D("dca", ";DCA [cm]", 100, 0, 5);
+  
+  
   return kStOK;
 }
 

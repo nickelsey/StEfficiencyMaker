@@ -52,6 +52,13 @@ public:
   void SetEtaAxis(unsigned n, double low, double high);
   void SetPhiAxis(unsigned n, double low, double high);
   
+  // set track cuts for matched tracks
+  void SetDCAMax(double dca) {maxDCA_ = dca;}
+  double DCAMax() const      {return maxDCA_;}
+  
+  void SetMinFitPoints(unsigned fit) {minFit_ = fit;}
+  unsigned MinFitPoints() const      {return minFit_;}
+  
   // (re)creates histograms from current axisDefs
   Int_t Init();
   
@@ -88,12 +95,17 @@ private:
   
   TH2D* nMCvsMatched_;
   TH2D* refzdc_;
+  TH1D* fitpt_;
+  TH1D* dca_;
   
   axisDef lumi_axis_;
   axisDef cent_axis_;
   axisDef pt_axis_;
   axisDef eta_axis_;
   axisDef phi_axis_;
+  
+  unsigned minFit_;
+  double maxDCA_;
   
   ClassDef(StEfficiencyMaker,1)
 };
