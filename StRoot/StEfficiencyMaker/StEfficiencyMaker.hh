@@ -93,6 +93,7 @@ private:
   std::vector<std::vector<TH3D*>> mc_;
   std::vector<std::vector<TH3D*>> matched_;
   
+  TH3D* mcPtvsmatchPt_;
   TH2D* nMCvsMatched_;
   TH2D* refzdc_;
   TH1D* fitpt_;

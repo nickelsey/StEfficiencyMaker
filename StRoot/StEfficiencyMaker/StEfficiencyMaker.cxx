@@ -49,7 +49,7 @@ int StEfficiencyMaker::Init() {
 void StEfficiencyMaker::SetDefaultAxes() {
   lumi_axis_ = axisDef(3, 0.0, 100.0);
   cent_axis_ = axisDef(11, 0, 1);
-  pt_axis_   = axisDef(50, 0.0, 5.0);
+  pt_axis_   = axisDef(100, 0.0, 10.0);
   eta_axis_  = axisDef(10, -1.0, 1.0);
   phi_axis_  = axisDef(1, -TMath::Pi(), TMath::Pi());
 }
@@ -162,6 +162,8 @@ Int_t StEfficiencyMaker::Make() {
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
     
+    mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
+    
     fitpt_->Fill(pair->fitPts());
     dca_->Fill(pair->dcaGl());
     
@@ -189,6 +191,7 @@ Int_t StEfficiencyMaker::Finish() {
     }
   }
   
+  mcPtvsmatchPt_->Write();
   nMCvsMatched_->Write();
   refzdc_->Write();
   fitpt_->Write();
@@ -238,6 +241,10 @@ int StEfficiencyMaker::InitOutput() {
     }
   }
   
+  mcPtvsmatchPt_ = new TH3D("mcptvsmatchptvseta", ";mc p_{T};match p_{T};#eta", pt_axis_.nBins,
+                            pt_axis_.low, pt_axis_.high, pt_axis_.nBins, pt_axis_.low, pt_axis_.high,
+                            eta_axis_.nBins, eta_axis_.low, eta_axis_.high);
+  mcPtvsmatchPt_->Sumw2();
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
   nMCvsMatched_->Sumw2();
   refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, 0, 100);
