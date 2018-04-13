@@ -45,7 +45,7 @@
     
     setenv NUMBER `wc -l &MUFILE;`
     
-    root4star -q -b produce_efficiency.cxx\(1e9,\"$FILELIST\",\&MUFILE;,\&MCFILE;,\"$JOBID\",$NUMBER\)
+    root4star -q -b produce_efficiency.cxx\(1e9,\"\&MUFILE;\",\"\&MCFILE;\",\"$JOBID\",$NUMBER\)
 
     rm &OUTDIR;/tmplogs/$JOBID.*
 	
