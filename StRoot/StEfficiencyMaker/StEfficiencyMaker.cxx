@@ -229,18 +229,23 @@ int StEfficiencyMaker::InitOutput() {
                                  pt_axis_.nBins, pt_axis_.low, pt_axis_.high,
                                  eta_axis_.nBins, eta_axis_.low, eta_axis_.high,
                                  phi_axis_.nBins, phi_axis_.low, phi_axis_.high);
+      mc_[lumi][cent]->Sumw2();
       matched_[lumi][cent] = new TH3D(match_name.c_str(), ";p_{T};#eta;#phi",
                                       pt_axis_.nBins, pt_axis_.low, pt_axis_.high,
                                       eta_axis_.nBins, eta_axis_.low, eta_axis_.high,
                                       phi_axis_.nBins, phi_axis_.low, phi_axis_.high);
+      matched_[lumi][cent]->Sumw2();
     }
   }
   
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
+  nMCvsMatched_->Sumw2();
   refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, 0, 100);
+  refzdc_->Sumw2();
   fitpt_ = new TH1D("fitpoints", ";fit points", 50, 0, 50);
+  fitpt_->Sumw2();
   dca_ = new TH1D("dca", ";DCA [cm]", 100, 0, 5);
-  
+  dca_->Sumw2();
   
   return kStOK;
 }
