@@ -18,8 +18,8 @@ StEfficiencyMaker::StEfficiencyMaker(TChain* mcTree, std::string outputFile) {
   
   current_ = 0;
   
-  refcent_def_ = std::vector<unsigned>{420, 364, 276, 212, 156, 108, 68, 44, 28, 12, 0};
-  refcent_def = std::vector<unsigned>{406, 342, 241, 164, 106, 65, 37, 19, 9, 0};
+  //refcent_def_ = std::vector<unsigned>{420, 364, 276, 212, 156, 108, 68, 44, 28, 12, 0};
+  refcent_def_ = std::vector<unsigned>{406, 342, 241, 164, 106, 65, 37, 19, 9, 0};
   refcent_string_ = std::vector<std::string>{"0-5%", "5-10%", "10-20%", "20-30%",
                                             "30-40%", "40-50%", "50-60%", "60-70%",
                                             "70-80%", "80-100%"};
