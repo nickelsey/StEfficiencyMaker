@@ -19,9 +19,10 @@ StEfficiencyMaker::StEfficiencyMaker(TChain* mcTree, std::string outputFile) {
   current_ = 0;
   
   refcent_def_ = std::vector<unsigned>{420, 364, 276, 212, 156, 108, 68, 44, 28, 12, 0};
+  refcent_def = std::vector<unsigned>{406, 342, 241, 164, 106, 65, 37, 19, 9, 0};
   refcent_string_ = std::vector<std::string>{"0-5%", "5-10%", "10-20%", "20-30%",
                                             "30-40%", "40-50%", "50-60%", "60-70%",
-                                            "70-80%", "80-90%", "90-100%"};
+                                            "70-80%", "80-100%"};
   
   
   muDstMaker_ = nullptr;
@@ -48,7 +49,7 @@ int StEfficiencyMaker::Init() {
 
 void StEfficiencyMaker::SetDefaultAxes() {
   lumi_axis_ = axisDef(3, 0.0, 100.0);
-  cent_axis_ = axisDef(11, 0, 1);
+  cent_axis_ = axisDef(10, 0, 1);
   pt_axis_   = axisDef(100, 0.0, 10.0);
   eta_axis_  = axisDef(10, -1.0, 1.0);
   phi_axis_  = axisDef(1, -TMath::Pi(), TMath::Pi());
