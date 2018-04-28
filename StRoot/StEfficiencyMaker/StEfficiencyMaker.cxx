@@ -108,7 +108,8 @@ Int_t StEfficiencyMaker::Make() {
     LOG_ERROR << "Could not find miniMC event matching muDST event" << endm;
     return kStErr;
   }
-
+  
+  LOG_INFO << "getting luminosity bin" << endm;
   // get luminosity bin
   double zdcAnd = muInputEvent_->runInfo().zdcCoincidenceRate();
   int zdcBin = -1;
@@ -119,29 +120,29 @@ Int_t StEfficiencyMaker::Make() {
       break;
     }
   }
-  
+  LOG_INFO << "got luminosity bin, getting centrality" << endm;
   // get centrality
   cent_def_.setEvent(muInputEvent_->runId(), muInputEvent_->refMult(), zdcAnd, event_->vertexZ());
   int centBin = cent_def_.centrality16();
   double refmult = centBin = cent_def_.refMultCorr();
-  
+  LOG_INFO << "done, going into loop" << endm;
   
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
   
   refzdc_->Fill(refmult, zdcAnd);
-  
+  LOG_INFO << "getting histograms" << endm;
   // get the proper histograms
   TH3D* mc = mc_[zdcBin][centBin];
   TH3D* match = matched_[zdcBin][centBin];
-  
+  LOG_INFO << "getting arrays" << endm;
   TClonesArray* mc_array = event_->tracks(MC);
   TIter next_mc(mc_array);
   StTinyMcTrack* track = nullptr;
   TClonesArray* match_array = event_->tracks(MATCHED);
   TIter next_match(match_array);
   StMiniMcPair* pair = nullptr;
-  
+  LOG_INFO << "HERE" << endm;
   unsigned count_mc = 0;
   unsigned count_pair = 0;
   while ((track = (StTinyMcTrack*) next_mc())) {
@@ -276,7 +277,7 @@ bool StEfficiencyMaker::LoadEvent() {
   if (event_->eventId() == eventID &&
       event_->runId() == runID)
     return true;
-  LOG_INFO << "shouldn't be here" << endm;
+  
   while (nTries >= 0) {
     
     current_++;
