@@ -33,10 +33,13 @@ StEfficiencyMaker::~StEfficiencyMaker() {
 }
 
 int StEfficiencyMaker::Init() {
+  LOG_INFO << "init" << endm;
   if (InitInput() != kStOK)
     return kStFatal;
+  LOG_INFO << "init input complete" << endm;
   if (InitOutput() != kStOK)
     return kStFatal;
+  LOG_INFO << "init output" << endm;
   return kStOK;
 }
 
@@ -70,6 +73,7 @@ void StEfficiencyMaker::SetPhiAxis(unsigned n, double low, double high) {
 
 
 bool StEfficiencyMaker::LoadTree(TChain* chain) {
+  LOG_INFO << "loading tree" << endm;
   if (chain == nullptr) {
     LOG_INFO << "chain does not exist" << endm;
     return false;
@@ -78,12 +82,14 @@ bool StEfficiencyMaker::LoadTree(TChain* chain) {
     LOG_ERROR << "chain does not contain StMiniMcEvent branch" << endm;
     return false;
   }
-  
+  LOG_INFO << "loading minimcevent" << endm;
   chain_ = chain;
   event_ = new StMiniMcEvent;
-  
+  LOG_INFO << "loading event done" << endm;
   chain_->SetBranchAddress("StMiniMcEvent", &event_);
+  LOG_INFO << "loading chain 0" << endm;
   chain_->GetEntry(0);
+  LOG_INFO << "entry loaded" << endm;
   return true;
 }
 
@@ -93,6 +99,7 @@ bool StEfficiencyMaker::CheckAxes() {
 }
 
 Int_t StEfficiencyMaker::Make() {
+  LOG_INFO << "MAKE" <<endm;
   if (event_ == nullptr) {
     LOG_ERROR << "StMiniMcEvent Branch not loaded properly: exiting run loop" << endm;
     return kStFatal;
@@ -107,7 +114,7 @@ Int_t StEfficiencyMaker::Make() {
     LOG_ERROR << "Could not find miniMC event matching muDST event" << endm;
     return kStErr;
   }
-  
+  LOG_INFO << "DONE LOADING"<< endm;
   // get luminosity bin
   double zdcAnd = muInputEvent_->runInfo().zdcCoincidenceRate();
   int zdcBin = -1;
