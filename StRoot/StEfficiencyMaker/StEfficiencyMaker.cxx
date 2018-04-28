@@ -128,6 +128,10 @@ Int_t StEfficiencyMaker::Make() {
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
   
+  LOG_INFO << "zdc bin: " << zdcBin << endm;
+  LOG_INFO << "cent bin: " << centBin << endm;
+  LOG_INFO << "refmult: " << refmult << endm;
+  
   refzdc_->Fill(refmult, zdcAnd);
   
   // get the proper histograms
