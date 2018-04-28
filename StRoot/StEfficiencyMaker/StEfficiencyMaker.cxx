@@ -128,19 +128,11 @@ Int_t StEfficiencyMaker::Make() {
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
   
-  LOG_INFO << "zdc bin: " << zdcBin << endm;
-  LOG_INFO << "cent bin: " << centBin << endm;
-  LOG_INFO << "refmult: " << refmult << endm;
-  
   refzdc_->Fill(refmult, zdcAnd);
   
   // get the proper histograms
   TH3D* mc = mc_[zdcBin][centBin];
   TH3D* match = matched_[zdcBin][centBin];
-  
-  LOG_INFO << "size: " << mc_.size() << " " << (mc_.size() ? mc_[0].size() : 0) << endm;
-  LOG_INFO << "mc: " << mc << endm;
-  LOG_INFO << "match: " << match << endm;
   
   TClonesArray* mc_array = event_->tracks(MC);
   TIter next_mc(mc_array);
@@ -161,13 +153,10 @@ Int_t StEfficiencyMaker::Make() {
   }
   
   while ((pair = (StMiniMcPair*) next_match())) {
-    LOG_INFO << "CHECKING PAIR TRACK" << endm;
-    LOG_INFO << "mc track pt: " << track->ptMc() << endm;
-    LOG_INFO << "mc eta: " << track->etaMc() << endm;
-    LOG_INFO << "track geant id: " << track->geantId() << endm;
-    if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
+    
+    if (geant_ids_.size() && geant_ids_.find(pair->geantId()) == geant_ids_.end())
       continue;
-    LOG_INFO << "got here?" << endm;
+    
     count_pair++;
     
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
@@ -182,7 +171,7 @@ Int_t StEfficiencyMaker::Make() {
   }
   
   nMCvsMatched_->Fill(count_mc, count_pair);
-  LOG_INFO << "HERE?" << endm;
+  
   return kStOK;
 }
 
