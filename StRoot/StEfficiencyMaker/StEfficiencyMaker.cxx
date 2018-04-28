@@ -130,7 +130,7 @@ Int_t StEfficiencyMaker::Make() {
   
   LOG_INFO << "luminosity bin: " << zdcBin << endm;
   LOG_INFO << "cent bin: " << centBin << endm;
-  LOG_ INFO << "size: " << mc.size() << (mc.size() ? mc[0].size() : 0) << endm;
+  LOG_INFO << "size: " << mc.size() << (mc.size() ? mc[0].size() : 0) << endm;
   
   refzdc_->Fill(refmult, zdcAnd);
   
