@@ -108,7 +108,7 @@ bool CentralityDef::checkEvent(int runid, double refmult, double zdc, double vz)
 void CentralityDef::calculateCentrality(double refmult, double zdc, double vz) {
   
   // we randomize raw refmult within 1 bin to avoid the peaky structures at low refmult
-  double raw_ref = refmult + Random::instance().uniform();
+  double raw_ref = refmult + dis_(gen_);
   
   if (zdc_par_.empty() || vz_par_.empty()) {
     std::cerr << "zdc and vz correction parameters must be set before refmultcorr can be calculated" << std::endl;

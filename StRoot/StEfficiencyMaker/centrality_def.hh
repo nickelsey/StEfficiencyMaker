@@ -9,6 +9,7 @@
 // used to test refmultcorr & centrality definitions in sct
 
 #include <vector>
+#include <random>
 
 class CentralityDef {
 public:
@@ -98,6 +99,9 @@ private:
   std::vector<double> weight_par_;
   std::vector<unsigned> cent_bin_16_;
   std::vector<unsigned> cent_bin_9_;
+  
+  std::default_random_engine gen_;
+  std::uniform_real_distribution<double> dis_(0,1);
 };
 
 #endif // CENTRALITY_DEF_HH
