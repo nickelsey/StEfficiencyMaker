@@ -101,7 +101,7 @@ private:
   std::vector<unsigned> cent_bin_9_;
   
   std::default_random_engine gen_;
-  std::uniform_real_distribution<double> dis_(0,1);
+  std::uniform_real_distribution<double> dis_;
 };
 
 #endif // CENTRALITY_DEF_HH

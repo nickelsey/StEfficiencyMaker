@@ -14,6 +14,9 @@ max_run_(15167014), weight_bound_(400), vz_norm_(0), zdc_norm_(0) {
   std::vector<unsigned> cent_bin_16_tmp_ = std::vector<unsigned>{10, 15, 22, 31, 43, 58, 76, 97, 123, 154, 189, 230, 276, 329, 390, 459};
   setCentralityBounds16Bin(cent_bin_16_tmp_);
   
+  // setup random number generator
+  dis_ = std::uniform_real_distribution<double>(0.0, 1.0);
+  
 }
 
 CentralityDef::~CentralityDef() {
