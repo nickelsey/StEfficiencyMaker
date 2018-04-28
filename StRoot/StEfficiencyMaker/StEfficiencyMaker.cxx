@@ -152,31 +152,36 @@ Int_t StEfficiencyMaker::Make() {
   unsigned count_mc = 0;
   unsigned count_pair = 0;
   while ((track = (StTinyMcTrack*) next_mc())) {
+    LOG_INFO << "CHECKING MC TRACK" << endm;
     if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
     count_mc++;
+    LOG_INFO << "FILLING MC TRACK" << endm;
     mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
+    LOG_INFO << "DONE" << endm;
   }
   
   while ((pair = (StMiniMcPair*) next_match())) {
+    LOG_INFO << "CHECKING PAIR TRACK" << endm;
     if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
     
     count_pair++;
+    
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
-    
+    LOG_INFO << "FILLING MC TRACK" << endm;
     mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
     
     fitpt_->Fill(pair->fitPts());
     dca_->Fill(pair->dcaGl());
     
     match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
-    
+    LOG_INFO << "DONE" << endm;
   }
-  
+  LOG_INFO << "HERE" << endm;
   nMCvsMatched_->Fill(count_mc, count_pair);
-  
+  LOG_INFO << "HERE?" << endm;
   return kStOK;
 }
 
