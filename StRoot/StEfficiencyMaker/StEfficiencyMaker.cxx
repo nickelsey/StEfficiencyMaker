@@ -270,17 +270,13 @@ bool StEfficiencyMaker::LoadEvent() {
   int runID = muInputEvent_->runId();
   
   // now try to match the event to a miniMC event in the chain
-  LOG_INFO << "event id: " << eventID << endm;
-  LOG_INFO << "run id: " << runID << endm;
-  LOG_INFO << "MC event id: " << event_->eventId() << endm;
-  LOG_INFO << "MC run id: " << event_->runId() << endm;
   
   int nTries = chain_->GetEntries();
   
   if (event_->eventId() == eventID &&
       event_->runId() == runID)
     return true;
-  
+  LOG_INFO << "shouldn't be here" << endm;
   while (nTries >= 0) {
     
     current_++;
