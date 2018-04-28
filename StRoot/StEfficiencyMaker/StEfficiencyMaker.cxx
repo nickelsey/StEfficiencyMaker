@@ -123,14 +123,10 @@ Int_t StEfficiencyMaker::Make() {
   // get centrality
   cent_def_.setEvent(muInputEvent_->runId(), muInputEvent_->refMult(), zdcAnd, event_->vertexZ());
   int centBin = cent_def_.centrality16();
-  double refmult = centBin = cent_def_.refMultCorr();
+  double refmult = cent_def_.refMultCorr();
   
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
-  
-  LOG_INFO << "luminosity bin: " << zdcBin << endm;
-  LOG_INFO << "cent bin: " << centBin << endm;
-  LOG_INFO << "size: " << mc_.size() << (mc_.size() ? mc_[0].size() : 0) << endm;
   
   refzdc_->Fill(refmult, zdcAnd);
   
