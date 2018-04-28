@@ -2,6 +2,7 @@
 #include "centrality_def.hh"
 
 #include <iostream>
+#include <math.h>
 
 CentralityDef::CentralityDef() : refmultcorr_(-1.0), centrality_16_(-1), centrality_9_(-1),
 weight_(0.0), min_vz_(-30.0), max_vz_(30.0), min_zdc_(0.0), max_zdc_(1e7), min_run_(15076101),
@@ -10,7 +11,7 @@ max_run_(15167014), weight_bound_(400), vz_norm_(0), zdc_norm_(0) {
   zdc_par_ = std::vector<double>{181.931, -0.429191};
   vz_par_ = std::vector<double>{542.485, 0.293356, 0.00382755, -0.000587529, -1.69114e-05, 1.0091e-06, 6.37584e-09};
   weight_par_ = std::vector<double>{1.11444, -1.76946, 0.999062, 5.1705, -0.00127791, 416.002, 2.49573e-06};
-  cent_bin_16_tmp_ = std::vector<unsigned>{10, 15, 22, 31, 43, 58, 76, 97, 123, 154, 189, 230, 276, 329, 390, 459};
+  std::vector<unsigned> cent_bin_16_tmp_ = std::vector<unsigned>{10, 15, 22, 31, 43, 58, 76, 97, 123, 154, 189, 230, 276, 329, 390, 459};
   setCentralityBounds16Bin(cent_bin_16_tmp_);
   
 }
