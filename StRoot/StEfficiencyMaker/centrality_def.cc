@@ -4,6 +4,8 @@
 #include <iostream>
 #include <math.h>
 
+#include "TRandom.h"
+
 CentralityDef::CentralityDef() : refmultcorr_(-1.0), centrality_16_(-1), centrality_9_(-1),
 weight_(0.0), min_vz_(-30.0), max_vz_(30.0), min_zdc_(0.0), max_zdc_(1e7), min_run_(15076101),
 max_run_(15167014), weight_bound_(400), vz_norm_(0), zdc_norm_(0) {
@@ -13,9 +15,6 @@ max_run_(15167014), weight_bound_(400), vz_norm_(0), zdc_norm_(0) {
   weight_par_ = std::vector<double>{1.11444, -1.76946, 0.999062, 5.1705, -0.00127791, 416.002, 2.49573e-06};
   std::vector<unsigned> cent_bin_16_tmp_ = std::vector<unsigned>{10, 15, 22, 31, 43, 58, 76, 97, 123, 154, 189, 230, 276, 329, 390, 459};
   setCentralityBounds16Bin(cent_bin_16_tmp_);
-  
-  // setup random number generator
-  dis_ = std::uniform_real_distribution<double>(0.0, 1.0);
   
 }
 
@@ -111,7 +110,7 @@ bool CentralityDef::checkEvent(int runid, double refmult, double zdc, double vz)
 void CentralityDef::calculateCentrality(double refmult, double zdc, double vz) {
   
   // we randomize raw refmult within 1 bin to avoid the peaky structures at low refmult
-  double raw_ref = refmult + dis_(gen_);
+  double raw_ref = refmult + gRandom->Rndm();
   
   if (zdc_par_.empty() || vz_par_.empty()) {
     std::cerr << "zdc and vz correction parameters must be set before refmultcorr can be calculated" << std::endl;
