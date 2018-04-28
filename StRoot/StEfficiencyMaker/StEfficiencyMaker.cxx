@@ -18,13 +18,6 @@ StEfficiencyMaker::StEfficiencyMaker(TChain* mcTree, std::string outputFile) {
   
   current_ = 0;
   
-  //refcent_def_ = std::vector<unsigned>{420, 364, 276, 212, 156, 108, 68, 44, 28, 12, 0};
-  refcent_def_ = std::vector<unsigned>{406, 342, 241, 164, 106, 65, 37, 19, 9, 0};
-  refcent_string_ = std::vector<std::string>{"0-5%", "5-10%", "10-20%", "20-30%",
-                                            "30-40%", "40-50%", "50-60%", "60-70%",
-                                            "70-80%", "80-100%"};
-  
-  
   muDstMaker_ = nullptr;
   muDst_ = nullptr;
   muInputEvent_ = nullptr;
@@ -48,8 +41,8 @@ int StEfficiencyMaker::Init() {
 }
 
 void StEfficiencyMaker::SetDefaultAxes() {
-  lumi_axis_ = axisDef(3, 0.0, 100.0);
-  cent_axis_ = axisDef(10, 0, 1);
+  lumi_axis_ = axisDef(3, 0.0, 1e5);
+  cent_axis_ = axisDef(16, 0, 1);
   pt_axis_   = axisDef(100, 0.0, 10.0);
   eta_axis_  = axisDef(10, -1.0, 1.0);
   phi_axis_  = axisDef(1, -TMath::Pi(), TMath::Pi());
@@ -115,17 +108,8 @@ Int_t StEfficiencyMaker::Make() {
     return kStErr;
   }
   
-  // find centrality and luminosity bin
-  unsigned refmult = muInputEvent_->refMult();
-  int centBin = -1;
-  for (unsigned i = 0; i < refcent_def_.size(); ++i) {
-    if (refmult > refcent_def_[i]) {
-      centBin = i;
-      break;
-    }
-  }
-  
-  double zdcAnd = muInputEvent_->runInfo().zdcCoincidenceRate() / 1000.0;
+  // get luminosity bin
+  double zdcAnd = muInputEvent_->runInfo().zdcCoincidenceRate();
   int zdcBin = -1;
   for (unsigned i = 0; i < lumi_axis_.nBins; ++i) {
     if (zdcAnd > lumi_axis_.low + i * lumi_axis_.width() &&
@@ -134,6 +118,12 @@ Int_t StEfficiencyMaker::Make() {
       break;
     }
   }
+  
+  // get centrality
+  cent_def_.setEvent(muInputEvent_->runId(), muInputEvent_->refmult(), zdcAnd, event_->vertexZ());
+  int centBin = cent_def_.centrality16();
+  double refmult = centBin = cent_def_.refMultCorr();
+  
   
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
@@ -154,11 +144,16 @@ Int_t StEfficiencyMaker::Make() {
   unsigned count_mc = 0;
   unsigned count_pair = 0;
   while ((track = (StTinyMcTrack*) next_mc())) {
+    if (geant_ids_.size() && geant_ids_.find(track.geantId()) == geant_ids_.end())
+      continue;
     count_mc++;
     mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
   }
   
   while ((pair = (StMiniMcPair*) next_match())) {
+    if (geant_ids_.size() && geant_ids_.find(track.geantId()) == geant_ids_.end())
+      continue;
+    
     count_pair++;
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
@@ -248,7 +243,7 @@ int StEfficiencyMaker::InitOutput() {
   mcPtvsmatchPt_->Sumw2();
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
   nMCvsMatched_->Sumw2();
-  refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, 0, 100);
+  refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, lumi_axis_.low, lumi_axis_.high);
   refzdc_->Sumw2();
   fitpt_ = new TH1D("fitpoints", ";fit points", 50, 0, 50);
   fitpt_->Sumw2();

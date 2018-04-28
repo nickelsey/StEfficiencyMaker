@@ -2,6 +2,7 @@
 <!DOCTYPE note [
 <!ENTITY MUFILE "/global/homes/e/elsey/StEfficiencyMaker/list/mu1.list">
 <!ENTITY MCFILE "/global/homes/e/elsey/StEfficiencyMaker/list/mc1.list">
+<!ENTITY GEANTID "8">
 <!ENTITY PROD "SL17d_embed">
 <!ENTITY ROOTDIR "/global/homes/e/elsey/StEfficiencyMaker">
 <!ENTITY OUTDIR "/global/homes/e/elsey/StEfficiencyMaker/out">
@@ -45,7 +46,7 @@
     
     setenv NUMBER `wc -l &MUFILE;`
     
-    root4star -q -b produce_efficiency.cxx\(1e9,\"\&MUFILE;\",\"\&MCFILE;\",\"$JOBID\",$NUMBER\)
+    root4star -q -b produce_efficiency.cxx\(1e9,\"\&MUFILE;\",\"\&MCFILE;\",\"$JOBID\",\&GEANTID;,$NUMBER\)
 
     rm &OUTDIR;/tmplogs/$JOBID.*
 	

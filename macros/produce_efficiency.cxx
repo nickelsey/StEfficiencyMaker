@@ -20,6 +20,7 @@ void produce_efficiency(int nEvents = 1e9,
                         const char* muFileList = "mutest.list",
                         const char* mcFileList = "mctest.list",
                         const char* nametag  = "StEfficiencyMaker_example",
+                        int geantId = 8, // 8 = pi+, 9 = pi-
                         int nFiles = 5)
 {
   // load STAR libraries
@@ -40,6 +41,7 @@ void produce_efficiency(int nEvents = 1e9,
   }
   std::string outname = std::string(nametag) + ".root";
   StEfficiencyMaker* eff_maker = new StEfficiencyMaker(mcChain, outname);
+  eff_maker->AddGeantId(geantId);
 
   // for each event, print the memory usage
   // helpful for debugging

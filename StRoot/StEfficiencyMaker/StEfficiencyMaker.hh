@@ -2,8 +2,11 @@
 #ifndef STEFFICIENCYMAKER__HH
 #define STEFFICIENCYMAKER__HH
 
+#include "centrality_def.hh"
+
 #include <string>
 #include <vector>
+#include <set>
 
 #include "StMaker.h"
 #include "StMiniMcEvent/StMiniMcEvent.h"
@@ -12,7 +15,6 @@
 #include "TH3D.h"
 #include "TH2D.h"
 
-#include "StMaker.h"
 #include "StMuDSTMaker/COMMON/StMuDstMaker.h"
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
@@ -52,12 +54,18 @@ public:
   void SetEtaAxis(unsigned n, double low, double high);
   void SetPhiAxis(unsigned n, double low, double high);
   
+  // allows you to modify the centrality and StRefMultCorr definitions
+  CentralityDef& CentralityDefinition() {return cent_def_;}
+  
   // set track cuts for matched tracks
   void SetDCAMax(double dca) {maxDCA_ = dca;}
   double DCAMax() const      {return maxDCA_;}
   
   void SetMinFitPoints(unsigned fit) {minFit_ = fit;}
   unsigned MinFitPoints() const      {return minFit_;}
+  
+  void AddGeantId(int id)         {geant_ids_.insert(id);}
+  std::set<int>& GeantIds() const {return geant_ids_;}
   
   // (re)creates histograms from current axisDefs
   Int_t Init();
@@ -70,6 +78,8 @@ public:
   
 private:
   
+  CentralityDef cent_def_;
+  
   int InitInput();
   int InitOutput();
   bool LoadEvent();
@@ -78,9 +88,6 @@ private:
   
   TChain* chain_;
   TFile* out_;
-  
-  std::vector<unsigned> refcent_def_;
-  std::vector<std::string> refcent_string_;
   
   unsigned current_;
   
@@ -107,6 +114,7 @@ private:
   
   unsigned minFit_;
   double maxDCA_;
+  std::set<int> geant_ids_;
   
   ClassDef(StEfficiencyMaker,1)
 };
