@@ -138,6 +138,10 @@ Int_t StEfficiencyMaker::Make() {
   TH3D* mc = mc_[zdcBin][centBin];
   TH3D* match = matched_[zdcBin][centBin];
   
+  LOG_INFO << "size: " << mc_.size() << " " << (mc_.size() ? mc_[0].size() : 0) << endm;
+  LOG_INFO << "mc: " << mc << endm;
+  LOG_INFO << "match: " << match << endm;
+  
   TClonesArray* mc_array = event_->tracks(MC);
   TIter next_mc(mc_array);
   StTinyMcTrack* track = nullptr;
