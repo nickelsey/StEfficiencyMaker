@@ -120,7 +120,7 @@ Int_t StEfficiencyMaker::Make() {
   }
   
   // get centrality
-  cent_def_.setEvent(muInputEvent_->runId(), muInputEvent_->refmult(), zdcAnd, event_->vertexZ());
+  cent_def_.setEvent(muInputEvent_->runId(), muInputEvent_->refMult(), zdcAnd, event_->vertexZ());
   int centBin = cent_def_.centrality16();
   double refmult = centBin = cent_def_.refMultCorr();
   
@@ -144,14 +144,14 @@ Int_t StEfficiencyMaker::Make() {
   unsigned count_mc = 0;
   unsigned count_pair = 0;
   while ((track = (StTinyMcTrack*) next_mc())) {
-    if (geant_ids_.size() && geant_ids_.find(track.geantId()) == geant_ids_.end())
+    if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
     count_mc++;
     mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
   }
   
   while ((pair = (StMiniMcPair*) next_match())) {
-    if (geant_ids_.size() && geant_ids_.find(track.geantId()) == geant_ids_.end())
+    if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
     
     count_pair++;

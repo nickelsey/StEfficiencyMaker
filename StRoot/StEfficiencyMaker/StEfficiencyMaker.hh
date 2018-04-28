@@ -64,8 +64,8 @@ public:
   void SetMinFitPoints(unsigned fit) {minFit_ = fit;}
   unsigned MinFitPoints() const      {return minFit_;}
   
-  void AddGeantId(int id)         {geant_ids_.insert(id);}
-  std::set<int>& GeantIds() const {return geant_ids_;}
+  void AddGeantId(int id)   {geant_ids_.insert(id);}
+  std::set<int>& GeantIds() {return geant_ids_;}
   
   // (re)creates histograms from current axisDefs
   Int_t Init();
