@@ -21,4 +21,4 @@ rm -rv *.so
 rm -rv *.tmp 
 rm -rv *.zip
 rm -rv array*
-rn -rf *.log
+rm -rf *.log
