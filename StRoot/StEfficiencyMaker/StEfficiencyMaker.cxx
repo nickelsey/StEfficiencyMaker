@@ -157,6 +157,9 @@ Int_t StEfficiencyMaker::Make() {
     if (geant_ids_.size() && geant_ids_.find(pair->geantId()) == geant_ids_.end())
       continue;
     
+    if (pair->parentGeantId() != 0)
+      continue;
+    
     count_pair++;
     
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
