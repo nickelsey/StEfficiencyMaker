@@ -149,6 +149,9 @@ Int_t StEfficiencyMaker::Make() {
       continue;
     count_mc++;
     
+    if (pair->parentGeantId() != 0)
+      continue;
+    
     mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
   }
   
