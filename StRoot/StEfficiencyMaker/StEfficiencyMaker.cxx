@@ -148,9 +148,10 @@ Int_t StEfficiencyMaker::Make() {
     if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
     
-    if (pair->parentGeantId() != 0)
+    if (track->parentGeantId() != 0)
       continue;
     
+    mcPt_->Fill(track->ptMc());
     count_mc++;
     
     // mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
@@ -164,15 +165,22 @@ Int_t StEfficiencyMaker::Make() {
     if (pair->parentGeantId() != 0)
       continue;
     
+    fitptmc_->Fill(pair->nHitMc());
+    
+    if (pair->nHitMc() < minFit_)
+      continue;
+    
     count_pair++;
     
-    mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
+    mc->Fill(pair->ptMc(), pair->etaMc(), pair->phiMc());
+    mcPairPt_->Fill(pair->ptMc());
     
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
   
     mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
     
+    recoMatchPt_->Fill(pair->ptPr());
     fitpt_->Fill(pair->fitPts());
     dca_->Fill(pair->dcaGl());
     
@@ -203,7 +211,11 @@ Int_t StEfficiencyMaker::Finish() {
   nMCvsMatched_->Write();
   refzdc_->Write();
   fitpt_->Write();
+  fitptmc_->Write();
   dca_->Write();
+  mcPairPt_->Write();
+  mcPt_->Write();
+  recoMatchPt_->Write();
   
   out_->Close();
   return kStOk;
@@ -259,8 +271,17 @@ int StEfficiencyMaker::InitOutput() {
   refzdc_->Sumw2();
   fitpt_ = new TH1D("fitpoints", ";fit points", 50, 0, 50);
   fitpt_->Sumw2();
+  fitptmc_ = new TH1D("fitpointsmc", ";fit points", 50, 0, 50);
+  fitptmc_->Sumw2();
   dca_ = new TH1D("dca", ";DCA [cm]", 100, 0, 5);
   dca_->Sumw2();
+  mcPt_ = new TH1D("mcpt", ";p_T", 100, 0, 5);
+  mcPt_->Sumw2();
+  mcPairPt_ = new TH1D("mcptpair", ";p_T", 100, 0, 5);
+  mcPairPt_->Sumw2();
+  recoMatchPt_ = new TH1D("recopt", ";p_T", 100, 0, 5);
+  recoMatchPt_->Sumw2();
+  
   
   return kStOK;
 }
