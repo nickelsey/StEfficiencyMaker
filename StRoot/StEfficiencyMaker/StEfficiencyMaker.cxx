@@ -147,12 +147,13 @@ Int_t StEfficiencyMaker::Make() {
     
     if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
-    count_mc++;
     
     if (pair->parentGeantId() != 0)
       continue;
     
-    mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
+    count_mc++;
+    
+    // mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
   }
   
   while ((pair = (StMiniMcPair*) next_match())) {
@@ -164,6 +165,8 @@ Int_t StEfficiencyMaker::Make() {
       continue;
     
     count_pair++;
+    
+    mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
     
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
