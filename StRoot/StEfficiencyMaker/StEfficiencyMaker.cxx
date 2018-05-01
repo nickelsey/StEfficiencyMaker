@@ -153,9 +153,6 @@ Int_t StEfficiencyMaker::Make() {
     
     fitptmc_->Fill(track->nHitMc());
     
-    if (track->nHitMc() < minFit_)
-      continue;
-    
     mcPt_->Fill(track->ptMc());
     count_mc++;
     
@@ -170,23 +167,15 @@ Int_t StEfficiencyMaker::Make() {
     if (pair->parentGeantId() != 0)
       continue;
     
-    if (pair->nHitMc() < minFit_)
-      continue;
-    
-    count_pair++;
-    
-    //mc->Fill(pair->ptMc(), pair->etaMc(), pair->phiMc());
-    mcPairPt_->Fill(pair->ptMc());
-    
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
-  
-    mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
+    count_pair++;
+    mcPairPt_->Fill(pair->ptMc());
     
+    mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
     recoMatchPt_->Fill(pair->ptPr());
     fitpt_->Fill(pair->fitPts());
     dca_->Fill(pair->dcaGl());
-    
     match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
   }
   
