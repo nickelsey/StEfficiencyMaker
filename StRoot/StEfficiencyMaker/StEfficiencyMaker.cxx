@@ -33,10 +33,12 @@ StEfficiencyMaker::~StEfficiencyMaker() {
 }
 
 int StEfficiencyMaker::Init() {
+  LOG_INFO << "INIT" << endm;
   if (InitInput() != kStOK)
     return kStFatal;
   if (InitOutput() != kStOK)
     return kStFatal;
+  LOG_INFO << "COMPLETE" << endm;
   return kStOK;
 }
 
@@ -93,7 +95,7 @@ bool StEfficiencyMaker::CheckAxes() {
 }
 
 Int_t StEfficiencyMaker::Make() {
-
+  LOG_INFO << "MAKE" << endm;
   if (event_ == nullptr) {
     LOG_ERROR << "StMiniMcEvent Branch not loaded properly: exiting run loop" << endm;
     return kStFatal;
@@ -102,7 +104,7 @@ Int_t StEfficiencyMaker::Make() {
     LOG_ERROR << "no histograms for analysis exist: was initialization successful?" << endm;
     return kStFatal;
   }
-  
+  LOG_INFO << "LOAD" << endm;
   // load the matching miniMC event
   if (LoadEvent() == false) {
     LOG_ERROR << "Could not find miniMC event matching muDST event" << endm;
@@ -110,6 +112,7 @@ Int_t StEfficiencyMaker::Make() {
   }
   
   // get luminosity bin
+  LOG_INFO << "LUMI" << endm;
   double zdcAnd = muInputEvent_->runInfo().zdcCoincidenceRate();
   int zdcBin = -1;
   for (unsigned i = 0; i < lumi_axis_.nBins; ++i) {
@@ -121,6 +124,7 @@ Int_t StEfficiencyMaker::Make() {
   }
   
   // get centrality
+  LOG_INFO << "CENT" << endm;
   cent_def_.setEvent(muInputEvent_->runId(), muInputEvent_->refMult(), zdcAnd, event_->vertexZ());
   int centBin = cent_def_.centrality16();
   double refmult = cent_def_.refMultCorr();
@@ -129,7 +133,7 @@ Int_t StEfficiencyMaker::Make() {
     return kStOK;
   
   refzdc_->Fill(refmult, zdcAnd);
-  
+  LOG_INFO << "BINS" << endm;
   // get the proper histograms
   TH3D* mc = mc_[zdcBin][centBin];
   TH3D* match = matched_[zdcBin][centBin];
@@ -140,7 +144,7 @@ Int_t StEfficiencyMaker::Make() {
   TClonesArray* match_array = event_->tracks(MATCHED);
   TIter next_match(match_array);
   StMiniMcPair* pair = nullptr;
-  
+  LOG_INFO << "LOOP1" << endm;
   unsigned count_mc = 0;
   unsigned count_pair = 0;
   while ((track = (StTinyMcTrack*) next_mc())) {
@@ -156,7 +160,7 @@ Int_t StEfficiencyMaker::Make() {
     
     // mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
   }
-  
+  LOG_INFO << "LOOP2" << endm;
   while ((pair = (StMiniMcPair*) next_match())) {
     
     if (geant_ids_.size() && geant_ids_.find(pair->geantId()) == geant_ids_.end())
@@ -186,7 +190,7 @@ Int_t StEfficiencyMaker::Make() {
     
     match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
   }
-  
+  LOG_INFO << "FINISHED" << endm;
   nMCvsMatched_->Fill(count_mc, count_pair);
   
   return kStOK;
