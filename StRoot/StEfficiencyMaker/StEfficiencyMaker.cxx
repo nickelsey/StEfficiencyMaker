@@ -169,6 +169,10 @@ Int_t StEfficiencyMaker::Make() {
     
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
+    
+    if (pair->fitPts() < 0.51 * pair->nPossiblePts())
+      continue;
+    
     count_pair++;
     mcPairPt_->Fill(pair->ptMc());
     
