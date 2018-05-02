@@ -274,7 +274,7 @@ int StEfficiencyMaker::InitOutput() {
   fitpt_->Sumw2();
   fitptmc_ = new TH1D("fitpointsmc", ";fit points", 50, 0, 50);
   fitptmc_->Sumw2();
-  dcaPt_ = new TH1D("dcapt", ";DCA [cm]", 100, 0, 5, 100, 0, 5);
+  dcaPt_ = new TH2D("dcapt", ";DCA [cm]", 100, 0, 5, 100, 0, 5);
   dcaPt_->Sumw2();
   mcPt_ = new TH1D("mcpt", ";p_T", 100, 0, 5);
   mcPt_->Sumw2();
