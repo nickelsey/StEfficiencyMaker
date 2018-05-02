@@ -173,8 +173,8 @@ Int_t StEfficiencyMaker::Make() {
     if (pair->fitPts() < 0.52 * pair->nPossiblePts())
       continue;
     
-    if (pair->commonFrac() < 0.5)
-      continue
+//    if (pair->commonFrac() < 0.5)
+//      continue;
     
     count_pair++;
     mcPairPt_->Fill(pair->ptMc());
