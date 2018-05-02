@@ -178,11 +178,12 @@ Int_t StEfficiencyMaker::Make() {
     
     count_pair++;
     mcPairPt_->Fill(pair->ptMc());
+    commonFrac_->Fill(pair->commonFrac());
     
     mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
     recoMatchPt_->Fill(pair->ptPr());
     fitpt_->Fill(pair->fitPts());
-    dca_->Fill(pair->dcaGl());
+    dcaPt_->Fill(pair->dcaGl(), pair->ptPr());
     match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
   }
   
@@ -211,7 +212,7 @@ Int_t StEfficiencyMaker::Finish() {
   refzdc_->Write();
   fitpt_->Write();
   fitptmc_->Write();
-  dca_->Write();
+  dcaPt_->Write();
   mcPairPt_->Write();
   mcPt_->Write();
   recoMatchPt_->Write();
@@ -273,8 +274,8 @@ int StEfficiencyMaker::InitOutput() {
   fitpt_->Sumw2();
   fitptmc_ = new TH1D("fitpointsmc", ";fit points", 50, 0, 50);
   fitptmc_->Sumw2();
-  dca_ = new TH1D("dca", ";DCA [cm]", 100, 0, 5);
-  dca_->Sumw2();
+  dcaPt_ = new TH1D("dcapt", ";DCA [cm]", 100, 0, 5, 100, 0, 5);
+  dcaPt_->Sumw2();
   mcPt_ = new TH1D("mcpt", ";p_T", 100, 0, 5);
   mcPt_->Sumw2();
   mcPairPt_ = new TH1D("mcptpair", ";p_T", 100, 0, 5);
@@ -282,6 +283,7 @@ int StEfficiencyMaker::InitOutput() {
   recoMatchPt_ = new TH1D("recopt", ";p_T", 100, 0, 5);
   recoMatchPt_->Sumw2();
   commonFrac_ = new TH1D("commonFrac", "", 100, 0, 1);
+  commonFrac_->Sumw2();
   
   
   return kStOK;

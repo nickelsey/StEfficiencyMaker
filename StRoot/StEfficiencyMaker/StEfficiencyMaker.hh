@@ -105,7 +105,7 @@ private:
   TH2D* refzdc_;
   TH1D* fitpt_;
   TH1D* fitptmc_;
-  TH1D* dca_;
+  TH2D* dcaPt_;
   TH1D* mcPt_;
   TH1D* mcPairPt_;
   TH1D* recoMatchPt_;
