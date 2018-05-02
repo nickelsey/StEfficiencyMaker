@@ -109,6 +109,7 @@ private:
   TH1D* mcPt_;
   TH1D* mcPairPt_;
   TH1D* recoMatchPt_;
+  TH1D* commonFrac_;
   
   
   axisDef lumi_axis_;

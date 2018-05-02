@@ -173,6 +173,9 @@ Int_t StEfficiencyMaker::Make() {
     if (pair->fitPts() < 0.52 * pair->nPossiblePts())
       continue;
     
+    if (pair->commonFrac() < 0.5)
+      continue
+    
     count_pair++;
     mcPairPt_->Fill(pair->ptMc());
     
@@ -212,6 +215,7 @@ Int_t StEfficiencyMaker::Finish() {
   mcPairPt_->Write();
   mcPt_->Write();
   recoMatchPt_->Write();
+  commonFrac_->Write();
   
   out_->Close();
   return kStOk;
@@ -277,6 +281,7 @@ int StEfficiencyMaker::InitOutput() {
   mcPairPt_->Sumw2();
   recoMatchPt_ = new TH1D("recopt", ";p_T", 100, 0, 5);
   recoMatchPt_->Sumw2();
+  commonFrac_ = new TH1D("commonFrac", "", 100, 0, 1);
   
   
   return kStOK;
