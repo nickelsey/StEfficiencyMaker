@@ -111,6 +111,10 @@ private:
   TH1D* recoMatchPt_;
   TH1D* commonFrac_;
   
+  TH3D* mutrackhit_;
+  TH3D* mutrackhitpion_;
+  TH3D* matchtrackhitpion_;
+  
   
   axisDef lumi_axis_;
   axisDef cent_axis_;
