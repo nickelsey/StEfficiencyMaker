@@ -316,7 +316,7 @@ int StEfficiencyMaker::InitOutput() {
   mutrackhit_->Sumw2();
   mutrackhitpion_ = new TH3D("mutrackhitpion", ";eta;p_T;nHitsFit", 20, -1, 1, 20, 0, 5, 50, 0, 50);
   mutrackhitpion_->Sumw2();
-  matchtrackhitpion_ = = new TH3D("matchtrackhit", ";eta;p_T;nHitsFit", 20, -1, 1, 20, 0, 5, 50, 0, 50);
+  matchtrackhitpion_ = new TH3D("matchtrackhit", ";eta;p_T;nHitsFit", 20, -1, 1, 20, 0, 5, 50, 0, 50);
   matchtrackhitpion_->Sumw2();
   
   return kStOK;
