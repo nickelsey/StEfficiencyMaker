@@ -145,11 +145,15 @@ Int_t StEfficiencyMaker::Make() {
   unsigned count_pair = 0;
   while ((track = (StTinyMcTrack*) next_mc())) {
     
+    geant_id_->Fill(track->geantId());
+    
     if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
     
     if (track->parentGeantId() != 0)
       continue;
+    
+    geant_id_embed_->Fill(track->geantId());
     
     fitptmc_->Fill(track->nHitMc());
     
@@ -214,6 +218,8 @@ Int_t StEfficiencyMaker::Finish() {
   mcPt_->Write();
   recoMatchPt_->Write();
   commonFrac_->Write();
+  geant_id_embed_->Write();
+  geant_id_->Write();
   
   out_->Close();
   return kStOk;
@@ -282,6 +288,8 @@ int StEfficiencyMaker::InitOutput() {
   commonFrac_ = new TH1D("commonFrac", "", 100, 0, 1);
   commonFrac_->Sumw2();
   
+  geant_id_ = new TH1D("geantid", ";geant ID", 20, 0, 20);
+  geant_id_embed_ = new TH1D("geantidembed", ";geant ID", 20, 0, 20);
   return kStOK;
 }
 
