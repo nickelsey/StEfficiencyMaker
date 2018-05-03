@@ -5,8 +5,6 @@
 #include "StMiniMcEvent/StTinyMcTrack.h"
 #include "StMiniMcEvent/StContamPair.h"
 
-#include "StMuDSTMaker/COMMON/StMuTrack.h"
-
 #include "TMath.h"
 
 ClassImp(StEfficiencyMaker)
@@ -132,25 +130,6 @@ Int_t StEfficiencyMaker::Make() {
   if (zdcBin < 0 || centBin < 0)
     return kStOK;
   
-  // loop over mu tracks first
-  UInt_t nTracks = muDst_->primaryTracks()->GetEntries();
-  StMuTrack* muTrack;
-  for (UInt_t i = 0; i < nTracks; ++i) {
-    muTrack = (StMuTrack*) muDst_->primaryTracks(i);
-    if (muTrack->flag() < 0 || muTrack->dcaGlobal().mag() > 3.0)
-      continue;
-    mutrackhit_->Fill(muTrack->eta(),
-                      muTrack->pt(),
-                      muTrack->nHitsFit());
-    
-    if (fabs(muTrack->nSigmaPion() > 2.0))
-      continue;
-      
-    mutrackhitpion_->Fill(muTrack->eta(),
-                          muTrack->pt(),
-                          muTrack->nHitsFit());
-  }
-  
   refzdc_->Fill(refmult, zdcAnd);
   // get the proper histograms
   TH3D* mc = mc_[zdcBin][centBin];
@@ -188,16 +167,11 @@ Int_t StEfficiencyMaker::Make() {
     if (pair->parentGeantId() != 0)
       continue;
     
-    matchtrackhitpion_->Fill(pair->etaPr(), pair->ptPr(), pair->fitPts());
-    
     if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
       continue;
     
     if (pair->fitPts() < 0.52 * pair->nPossiblePts())
       continue;
-    
-//    if (pair->commonFrac() < 0.5)
-//      continue;
     
     count_pair++;
     mcPairPt_->Fill(pair->ptMc());
@@ -240,9 +214,6 @@ Int_t StEfficiencyMaker::Finish() {
   mcPt_->Write();
   recoMatchPt_->Write();
   commonFrac_->Write();
-  mutrackhit_->Write();
-  mutrackhitpion_->Write();
-  matchtrackhitpion_->Write();
   
   out_->Close();
   return kStOk;
@@ -310,14 +281,6 @@ int StEfficiencyMaker::InitOutput() {
   recoMatchPt_->Sumw2();
   commonFrac_ = new TH1D("commonFrac", "", 100, 0, 1);
   commonFrac_->Sumw2();
-  
-  
-  mutrackhit_ = new TH3D("mutrackhit", ";eta;p_T;nHitsFit", 20, -1, 1, 20, 0, 5, 50, 0, 50);
-  mutrackhit_->Sumw2();
-  mutrackhitpion_ = new TH3D("mutrackhitpion", ";eta;p_T;nHitsFit", 20, -1, 1, 20, 0, 5, 50, 0, 50);
-  mutrackhitpion_->Sumw2();
-  matchtrackhitpion_ = new TH3D("matchtrackhit", ";eta;p_T;nHitsFit", 20, -1, 1, 20, 0, 5, 50, 0, 50);
-  matchtrackhitpion_->Sumw2();
   
   return kStOK;
 }
