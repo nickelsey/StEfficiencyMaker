@@ -94,7 +94,7 @@ bool StEfficiencyMaker::CheckAxes() {
 }
 
 Int_t StEfficiencyMaker::Make() {
-  LOG_INFO << "MAKE" << endm;
+  
   if (event_ == nullptr) {
     LOG_ERROR << "StMiniMcEvent Branch not loaded properly: exiting run loop" << endm;
     return kStFatal;
@@ -103,7 +103,6 @@ Int_t StEfficiencyMaker::Make() {
     LOG_ERROR << "no histograms for analysis exist: was initialization successful?" << endm;
     return kStFatal;
   }
-  LOG_INFO << "LOAD" << endm;
   // load the matching miniMC event
   if (LoadEvent() == false) {
     LOG_ERROR << "Could not find miniMC event matching muDST event" << endm;
@@ -111,7 +110,6 @@ Int_t StEfficiencyMaker::Make() {
   }
   
   // get luminosity bin
-  LOG_INFO << "LUMI" << endm;
   double zdcAnd = muInputEvent_->runInfo().zdcCoincidenceRate();
   int zdcBin = -1;
   for (unsigned i = 0; i < lumi_axis_.nBins; ++i) {
