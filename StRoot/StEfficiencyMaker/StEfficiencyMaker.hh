@@ -64,6 +64,9 @@ public:
   void SetMinFitPoints(unsigned fit) {minFit_ = fit;}
   unsigned MinFitPoints() const      {return minFit_;}
   
+  void SetMinFitPointFraction(double frac) {minFitFrac_ = frac;}
+  double MinFitPointFraction() const       {return minFitFrac_;}
+  
   void AddGeantId(int id)   {geant_ids_.insert(id);}
   std::set<int>& GeantIds() {return geant_ids_;}
   
@@ -103,7 +106,9 @@ private:
   TH3D* mcPtvsmatchPt_;
   TH2D* nMCvsMatched_;
   TH2D* refzdc_;
-  TH1D* fitpt_;
+  TH2D* fitpt_;
+  TH2D* fitptpos_;
+  TH2D* fitptfrac_;
   TH1D* fitptmc_;
   TH2D* dcaPt_;
   TH1D* mcPt_;
@@ -122,6 +127,7 @@ private:
   axisDef phi_axis_;
   
   unsigned minFit_;
+  double minFitFrac_;
   double maxDCA_;
   std::set<int> geant_ids_;
   

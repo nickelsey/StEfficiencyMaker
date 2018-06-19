@@ -22,6 +22,8 @@ void produce_efficiency(int nEvents = 1e9,
                         const char* nametag  = "StEfficiencyMaker_example",
                         int geantId = 8, // 8 = pi+, 9 = pi-
                         double dcaMax = 3.0,
+                        int minFitPoints = 20,
+                        double fitPtFrac = 0.52,
                         int nFiles = 5)
 {
   // load STAR libraries
@@ -44,6 +46,7 @@ void produce_efficiency(int nEvents = 1e9,
   StEfficiencyMaker* eff_maker = new StEfficiencyMaker(mcChain, outname);
   eff_maker->AddGeantId(geantId);
   eff_maker->SetDCAMax(dcaMax);
+  eff_maker->SetMinFitPoints(minFitPoints);
 
   // for each event, print the memory usage
   // helpful for debugging

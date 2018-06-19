@@ -23,6 +23,7 @@ StEfficiencyMaker::StEfficiencyMaker(TChain* mcTree, std::string outputFile) {
   muInputEvent_ = nullptr;
   
   minFit_ = 20;
+  minFitFrac_ = 0.52;
   maxDCA_ = 3.0;
   
   out_ = new TFile(outputFile.c_str(), "RECREATE");
@@ -136,11 +137,8 @@ Int_t StEfficiencyMaker::Make() {
   TClonesArray* mc_array = event_->tracks(MC);
   TIter next_mc(mc_array);
   StTinyMcTrack* track = nullptr;
-  TClonesArray* match_array = event_->tracks(MATCHED);
-  TIter next_match(match_array);
-  StMiniMcPair* pair = nullptr;
   unsigned count_mc = 0;
-  unsigned count_pair = 0;
+  
   while ((track = (StTinyMcTrack*) next_mc())) {
     
     geant_id_->Fill(track->geantId());
@@ -161,18 +159,30 @@ Int_t StEfficiencyMaker::Make() {
     mc->Fill(track->ptMc(), track->etaMc(), track->phiMc());
   }
 
+  TClonesArray* match_array = event_->tracks(MATCHED);
+  TIter next_match(match_array);
+  StMiniMcPair* pair = nullptr;
+  unsigned count_pair = 0;
+  
   while ((pair = (StMiniMcPair*) next_match())) {
     
-    if (geant_ids_.size() && geant_ids_.find(pair->geantId()) == geant_ids_.end())
+    int pairGeantId = pair->geantId();
+    int parentGeantId = pair->parentGeantId();
+    double globalDCA = pair->dcaGl();
+    int pairFitPts = pair->fitPts();
+    int pairPossibleFitPts = pair->nPossiblePts();
+    double pairFitFrac = (double) pairFitPts / (double) pairPossibleFitPts;
+    
+    if (geant_ids_.size() && geant_ids_.find(pairGeantId) == geant_ids_.end())
       continue;
     
-    if (pair->parentGeantId() != 0)
+    if (parentGeantId != 0)
       continue;
     
-    if (pair->dcaGl() > maxDCA_ || pair->fitPts() < minFit_)
+    if (globalDCA > maxDCA_ || pairFitPts < minFit_)
       continue;
     
-    if (pair->fitPts() < 0.52 * pair->nPossiblePts())
+    if (pairFitFrac < minFitFrac_)
       continue;
     
     count_pair++;
@@ -181,8 +191,10 @@ Int_t StEfficiencyMaker::Make() {
     
     mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
     recoMatchPt_->Fill(pair->ptPr());
-    fitpt_->Fill(pair->fitPts());
-    dcaPt_->Fill(pair->dcaGl(), pair->ptPr());
+    fitpt_->Fill(pair->ptPr(), pairFitPts);
+    fitptpos_->Fill(pair->ptPr(), pairPossibleFitPts);
+    fitpointfrac_->Fill(pair->ptPr(), pairFitFrac);
+    dcaPt_->Fill(globalDCA, pair->ptPr());
     match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
   }
   
@@ -271,8 +283,12 @@ int StEfficiencyMaker::InitOutput() {
   nMCvsMatched_->Sumw2();
   refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, lumi_axis_.low, lumi_axis_.high);
   refzdc_->Sumw2();
-  fitpt_ = new TH1D("fitpoints", ";fit points", 50, 0, 50);
+  fitpt_ = new TH2D("fitpoints", ";p_{T};fit points", 50, 0, 5, 50, 0, 50);
   fitpt_->Sumw2();
+  fitptpos_ = new TH2D("fitpointspos", ";p_{T};fit points pos", 50, 0, 5, 50, 0, 50);
+  fitptpos_->Sumw2();
+  fitptfrac_ = new TH2D("fitpointfrac", ";p_{T};fit point fraction", 50, 0, 5, 50, 0, 1);
+  fitptfrac_->Sumw2();
   fitptmc_ = new TH1D("fitpointsmc", ";fit points", 50, 0, 50);
   fitptmc_->Sumw2();
   dcaPt_ = new TH2D("dcapt", ";DCA [cm]", 100, 0, 5, 100, 0, 5);
