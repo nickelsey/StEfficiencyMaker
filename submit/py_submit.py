@@ -58,7 +58,7 @@ def main(args):
     logdir = out_directory + '/tmplogs'
     os.makedirs(logdir)
 
-  xml_file = os.path.join(os.getcwd(), args.submitScript)
+  xml_file = os.path.join(os.getcwd(), args.submitscript)
   if not os.path.isfile(xml_file) :
     print('xmlfile doesnt exist!')
     return
