@@ -169,8 +169,8 @@ Int_t StEfficiencyMaker::Make() {
     int pairGeantId = pair->geantId();
     int parentGeantId = pair->parentGeantId();
     double globalDCA = pair->dcaGl();
-    int pairFitPts = pair->fitPts();
-    int pairPossibleFitPts = pair->nPossiblePts();
+    int pairFitPts = pair->fitPts() + 1;
+    int pairPossibleFitPts = pair->nPossiblePts() + 1;
     double pairFitFrac = (double) pairFitPts / (double) pairPossibleFitPts;
     
     if (geant_ids_.size() && geant_ids_.find(pairGeantId) == geant_ids_.end())
