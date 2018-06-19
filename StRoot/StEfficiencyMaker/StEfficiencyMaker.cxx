@@ -222,6 +222,8 @@ Int_t StEfficiencyMaker::Finish() {
   nMCvsMatched_->Write();
   refzdc_->Write();
   fitpt_->Write();
+  fitptpos_->Write();
+  fitptfrac_->Write();
   fitptmc_->Write();
   dcaPt_->Write();
   mcPairPt_->Write();
