@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE note [
-<!ENTITY MUFILE "/global/homes/e/elsey/StEfficiencyMaker/list/piplus/mu0.list">
-<!ENTITY MCFILE "/global/homes/e/elsey/StEfficiencyMaker/list/piplus/mc0.list">
+<!ENTITY MUFILE "/global/homes/e/elsey/StEfficiencyMaker/minimc_list/piplus/mu0.list">
+<!ENTITY MCFILE "/global/homes/e/elsey/StEfficiencyMaker/minimc_list/piplus/mc0.list">
 <!ENTITY GEANTID "8">
 <!ENTITY DCA "3.0">
 <!ENTITY NHIT "20">

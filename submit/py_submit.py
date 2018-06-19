@@ -120,7 +120,7 @@ def main(args):
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Submit embedding jobs via star-submit')
-  parser.add_argument('--listDir', default='list/piplus', help='location of embedding file lists')
+  parser.add_argument('--listDir', default='minimc_list/piplus', help='location of embedding file lists')
   parser.add_argument('--dca', default='3.0', help='dca cut for reconstructed tracks')
   parser.add_argument('--nhits', default='20', help='number of reconstructed hits in track reco')
   parser.add_argument('--nhitspos', default='0.52', help='fraction of reconstructed hits out of possible hits in track reco')
