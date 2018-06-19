@@ -193,7 +193,7 @@ Int_t StEfficiencyMaker::Make() {
     recoMatchPt_->Fill(pair->ptPr());
     fitpt_->Fill(pair->ptPr(), pairFitPts);
     fitptpos_->Fill(pair->ptPr(), pairPossibleFitPts);
-    fitpointfrac_->Fill(pair->ptPr(), pairFitFrac);
+    fitptfrac_->Fill(pair->ptPr(), pairFitFrac);
     dcaPt_->Fill(globalDCA, pair->ptPr());
     match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
   }

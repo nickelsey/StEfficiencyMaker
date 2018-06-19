@@ -126,7 +126,7 @@ private:
   axisDef eta_axis_;
   axisDef phi_axis_;
   
-  unsigned minFit_;
+  int minFit_;
   double minFitFrac_;
   double maxDCA_;
   std::set<int> geant_ids_;
