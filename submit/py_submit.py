@@ -102,6 +102,8 @@ def main(args):
     print("minimc file list: " + mc_file)
     print("geant ID: " + args.geantid)
     print("dca: " + args.dca)
+    print("min fit points: " + args.nhits)
+    print("min fit point fraction: " + args.nhitspos)
     print("root directory: " + rootdir)
     print("output directory: " + outdir)
     print(star_submit)
