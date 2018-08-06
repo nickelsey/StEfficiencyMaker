@@ -130,6 +130,7 @@ Int_t StEfficiencyMaker::Make() {
     return kStOK;
   
   refzdc_->Fill(refmult, zdcAnd);
+  refcent_->Fill(centBin, muInputEvent_->refMult());
   // get the proper histograms
   TH3D* mc = mc_[zdcBin][centBin];
   TH3D* match = matched_[zdcBin][centBin];
@@ -221,6 +222,7 @@ Int_t StEfficiencyMaker::Finish() {
   mcPtvsmatchPt_->Write();
   nMCvsMatched_->Write();
   refzdc_->Write();
+  refcent_->Write();
   fitpt_->Write();
   fitptpos_->Write();
   fitptfrac_->Write();
@@ -285,6 +287,7 @@ int StEfficiencyMaker::InitOutput() {
   nMCvsMatched_->Sumw2();
   refzdc_ = new TH2D("refzdc", ";refmult;zdc Rate [khz]", 200, 0, 800, 100, lumi_axis_.low, lumi_axis_.high);
   refzdc_->Sumw2();
+  refcent_ = new TH2D("refcent", ";cent;refmult", 16, 0, 16, 100, 0, 800);
   fitpt_ = new TH2D("fitpoints", ";p_{T};fit points", 50, 0, 5, 50, 0, 50);
   fitpt_->Sumw2();
   fitptpos_ = new TH2D("fitpointspos", ";p_{T};fit points pos", 50, 0, 5, 50, 0, 50);

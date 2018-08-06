@@ -106,6 +106,7 @@ private:
   TH3D* mcPtvsmatchPt_;
   TH2D* nMCvsMatched_;
   TH2D* refzdc_;
+  TH2D* refcent_;
   TH2D* fitpt_;
   TH2D* fitptpos_;
   TH2D* fitptfrac_;
