@@ -47,6 +47,7 @@ void produce_efficiency(int nEvents = 1e9,
   eff_maker->AddGeantId(geantId);
   eff_maker->SetDCAMax(dcaMax);
   eff_maker->SetMinFitPoints(minFitPoints);
+  eff_maker->SetMinFitPointFraction(fitPtFrac);
 
   // for each event, print the memory usage
   // helpful for debugging

@@ -143,10 +143,10 @@ Int_t StEfficiencyMaker::Make() {
     
     geant_id_->Fill(track->geantId());
     
-    if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
+    if (track->parentGeantId() != 0)
       continue;
     
-    if (track->parentGeantId() != 0)
+    if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
     
     geant_id_embed_->Fill(track->geantId());
@@ -173,10 +173,10 @@ Int_t StEfficiencyMaker::Make() {
     int pairPossibleFitPts = pair->nPossiblePts() + 1;
     double pairFitFrac = (double) pairFitPts / (double) pairPossibleFitPts;
     
-    if (geant_ids_.size() && geant_ids_.find(pairGeantId) == geant_ids_.end())
+    if (parentGeantId != 0)
       continue;
     
-    if (parentGeantId != 0)
+    if (geant_ids_.size() && geant_ids_.find(pairGeantId) == geant_ids_.end())
       continue;
     
     if (globalDCA > maxDCA_ || pairFitPts < minFit_)
