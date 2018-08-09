@@ -190,7 +190,7 @@ Int_t StEfficiencyMaker::Make() {
     mcPairPt_->Fill(pair->ptMc());
     commonFrac_->Fill(pair->commonFrac());
     
-    mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), pair->etaMc());
+    mcPtvsmatchPt_->Fill(pair->ptMc(), pair->ptPr(), centBin);
     recoMatchPt_->Fill(pair->ptPr());
     fitpt_->Fill(pair->ptPr(), pairFitPts);
     fitptpos_->Fill(pair->ptPr(), pairPossibleFitPts);
@@ -281,7 +281,7 @@ int StEfficiencyMaker::InitOutput() {
   
   mcPtvsmatchPt_ = new TH3D("mcptvsmatchptvseta", ";mc p_{T};match p_{T};#eta", pt_axis_.nBins,
                             pt_axis_.low, pt_axis_.high, pt_axis_.nBins, pt_axis_.low, pt_axis_.high,
-                            eta_axis_.nBins, eta_axis_.low, eta_axis_.high);
+                            cent_axis_.nBins, cent_axis_.low, cent_axis_.high);
   mcPtvsmatchPt_->Sumw2();
   nMCvsMatched_ = new TH2D("mcvsmatched", ";mc;matched", 100, 0, 100, 100, 0, 100);
   nMCvsMatched_->Sumw2();
