@@ -44,7 +44,7 @@ int StEfficiencyMaker::Init() {
 
 void StEfficiencyMaker::SetDefaultAxes() {
   lumi_axis_ = axisDef(3, 0.0, 1e5);
-  cent_axis_ = axisDef(16, 0, 1);
+  cent_axis_ = axisDef(16, 0, 16);
   pt_axis_   = axisDef(100, 0.0, 10.0);
   eta_axis_  = axisDef(10, -1.0, 1.0);
   phi_axis_  = axisDef(1, -TMath::Pi(), TMath::Pi());
