@@ -77,7 +77,7 @@ void CentralityDef::setCentralityBounds16Bin(const std::vector<unsigned>& bounds
   
   for (unsigned i = 0; i < bounds.size(); ++i) {
     cent_bin_16_.push_back(bounds[i]);
-    if (i%2 == 0 && i < 15) {
+    if (i%2 == 0 || i == 15) {
       cent_bin_9_.push_back(bounds[i]);
     }
   }
