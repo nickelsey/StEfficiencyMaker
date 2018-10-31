@@ -70,9 +70,7 @@ public:
   Int_t Finish();
   
 private:
-  
-  CentralityDef cent_def_;
-  
+   
   int InitInput();
   int InitOutput();
   bool LoadEvent();

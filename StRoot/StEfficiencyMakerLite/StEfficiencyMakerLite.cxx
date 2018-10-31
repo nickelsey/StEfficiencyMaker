@@ -175,19 +175,13 @@ Int_t StEfficiencyMakerLite::Make() {
 
 Int_t StEfficiencyMakerLite::Finish() {
   if (out_ == nullptr) {
-    out_ = new TFile("stefficiencymaker.root", "RECREATE");
+    out_ = new TFile("stefficiencymakerlite.root", "RECREATE");
   }
   
   out_->cd();
-  for (unsigned i = 0; i < mc_.size(); ++i) {
-    for (unsigned j = 0; j < mc_[i].size(); ++j) {
-      if (mc_[i][j] != nullptr)
-        mc_[i][j]->Write();
-      if (matched_[i][j] != nullptr)
-        matched_[i][j]->Write();
-    }
-  }
   
+  mc_->Write();
+  matched_->Write();
   mcPtvsmatchPt_->Write();
   nMCvsMatched_->Write();
   refcent_->Write();
