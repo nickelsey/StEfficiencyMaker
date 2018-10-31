@@ -16,14 +16,13 @@
     nFiles:        number of files to accept from the file list
 */
 
-void produce_efficiency(int nEvents = 1e9,
-                        const char* mcFileList = "mctest.list",
-                        const char* nametag  = "StEfficiencyMakerLite_example",
-                        int geantId = 8, // 8 = pi+, 9 = pi-
-                        double dcaMax = 3.0,
-                        int minFitPoints = 20,
-                        double fitPtFrac = 0.52,
-                        int nFiles = 5)
+void produce_efficiency_lite(const char* mcFileList = "mctest.list",
+                             const char* nametag  = "StEfficiencyMakerLite_example",
+                             int geantId = 8, // 8 = pi+, 9 = pi-
+                             double dcaMax = 3.0,
+                             int minFitPoints = 20,
+                             double fitPtFrac = 0.52,
+                             int nFiles = 5)
 {
   // load STAR libraries
   gROOT->Macro("LoadLogger.C");
@@ -41,7 +40,7 @@ void produce_efficiency(int nEvents = 1e9,
     mcChain->Add(line.c_str());
   }
   std::string outname = std::string(nametag) + ".root";
-  StEfficiencyMaker* eff_maker = new StEfficiencyMaker(mcChain, outname);
+  StEfficiencyMakerLite* eff_maker = new StEfficiencyMakerLite(mcChain, outname);
   eff_maker->AddGeantId(geantId);
   eff_maker->SetDCAMax(dcaMax);
   eff_maker->SetMinFitPoints(minFitPoints);
@@ -59,7 +58,7 @@ void produce_efficiency(int nEvents = 1e9,
   TStopwatch timer;
 	
   int i=0;
-  while ( i < nEvents && chain->Make() == kStOk ) {
+  while ( i < mcChain->GetEntries() && chain->Make() == kStOk ) {
     if ( i % 500 == 0 ) {
       cout<<"done with event "<<i;
       cout<<"\tcpu: "<<timer.CpuTime()<<"\treal: "<<timer.RealTime()<<"\tratio: "<<timer.CpuTime()/timer.RealTime();//<<endl;
