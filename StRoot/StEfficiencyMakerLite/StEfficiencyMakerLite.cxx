@@ -165,7 +165,7 @@ Int_t StEfficiencyMakerLite::Make() {
     fitptpos_->Fill(pair->ptPr(), pairPossibleFitPts);
     fitptfrac_->Fill(pair->ptPr(), pairFitFrac);
     dcaPt_->Fill(globalDCA, pair->ptPr());
-    match_->Fill(pair->ptPr(), pair->etaPr(), centBin);
+    matched_->Fill(pair->ptPr(), pair->etaPr(), centBin);
   }
   
   nMCvsMatched_->Fill(count_mc, count_pair);
