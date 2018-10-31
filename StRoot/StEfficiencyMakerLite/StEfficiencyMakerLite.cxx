@@ -102,7 +102,7 @@ Int_t StEfficiencyMakerLite::Make() {
   if (centBin < 0 || centBin > 8)
     return kStOK;
   
-  refcent_->Fill(centBin, refmult;
+  refcent_->Fill(centBin, refmult);
   
   TClonesArray* mc_array = event_->tracks(MC);
   TIter next_mc(mc_array);
@@ -126,7 +126,7 @@ Int_t StEfficiencyMakerLite::Make() {
     mcPt_->Fill(track->ptMc());
     count_mc++;
     
-    mc_->Fill(track->ptMc(), track->etaMc(), track->phiMc());
+    mc_->Fill(track->ptMc(), track->etaMc(), centBin);
   }
 
   TClonesArray* match_array = event_->tracks(MATCHED);
@@ -165,7 +165,7 @@ Int_t StEfficiencyMakerLite::Make() {
     fitptpos_->Fill(pair->ptPr(), pairPossibleFitPts);
     fitptfrac_->Fill(pair->ptPr(), pairFitFrac);
     dcaPt_->Fill(globalDCA, pair->ptPr());
-    match->Fill(pair->ptPr(), pair->etaPr(), pair->phiPr());
+    match_->Fill(pair->ptPr(), pair->etaPr(), centBin);
   }
   
   nMCvsMatched_->Fill(count_mc, count_pair);
@@ -203,11 +203,6 @@ Int_t StEfficiencyMakerLite::Finish() {
 
 
 int StEfficiencyMakerLite::InitInput() {
-  muDstMaker_ = (StMuDstMaker*) GetMakerInheritsFrom("StMuDstMaker");
-  if (muDstMaker_ == nullptr) {
-    LOG_ERROR << "No muDstMaker found in chain: StEfficiencyMakerLite init failed" << endm;
-    return kStFatal;
-  }
   return kStOK;
 }
 
