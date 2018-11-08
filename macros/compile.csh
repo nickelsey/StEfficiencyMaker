@@ -37,6 +37,6 @@ cons CXXFLAGS="${CXXFLAGSNEW}" +StEfficiencyMaker +StEfficiencyMakerLite
 echo "[i] Copying libraries to the lib & sandbox"
 find .sl*/lib -name "libStEfficiencyMaker.so" -exec cp -v {} ./libs/ \;
 find .sl*/lib -name "libStEfficiencyMaker.so" -exec cp -v {} ./sandbox/ \;
-find .sl*/lib -name "libStEfficiencyMakerLite.so" -exec cp -v {} .libs/ \;
+find .sl*/lib -name "libStEfficiencyMakerLite.so" -exec cp -v {} ./libs/ \;
 find .sl*/lib -name "libStEfficiencyMakerLite.so" -exec cp -v {} ./sandbox/ \;
 
