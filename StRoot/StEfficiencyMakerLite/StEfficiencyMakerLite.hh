@@ -86,6 +86,10 @@ private:
   
   TH3D* mc_;
   TH3D* matched_;
+
+  TH1D* test_mc_;
+  TH1D* test_match_;
+  TH1D* test_ref_;
   
   TH3D* mcPtvsmatchPt_;
   TH2D* nMCvsMatched_;

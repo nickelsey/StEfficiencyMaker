@@ -99,6 +99,12 @@ Int_t StEfficiencyMakerLite::Make() {
   int centBin = event_->centrality();
   double refmult = event_->nUncorrectedPrimaries();
   
+  // testing
+  // ------------------------
+  test_ref_->Fill(refmult);
+  // ------------------------
+  // end testing
+
   if (centBin < 0 || centBin > 8)
     return kStOK;
   
@@ -129,13 +135,28 @@ Int_t StEfficiencyMakerLite::Make() {
     mc_->Fill(track->ptMc(), track->etaMc(), centBin);
   }
 
+  // testing 
+  // ------------------------------------
+  next_mc.Reset();
+
+  while ((track = (StTinyMcTrack*) next_mc())) {
+    if (event_->nUncorrectedPrimaries() < 470)
+      break;
+    if (track->parentGeantId() != 0)
+      continue;
+      test_mc_->Fill(track->ptMc());
+  }
+
+  // ------------------------------------
+  // end testing
+
   TClonesArray* match_array = event_->tracks(MATCHED);
   TIter next_match(match_array);
   StMiniMcPair* pair = nullptr;
   unsigned count_pair = 0;
   
   while ((pair = (StMiniMcPair*) next_match())) {
-    
+
     int pairGeantId = pair->geantId();
     int parentGeantId = pair->parentGeantId();
     double globalDCA = pair->dcaGl();
@@ -167,6 +188,27 @@ Int_t StEfficiencyMakerLite::Make() {
     dcaPt_->Fill(globalDCA, pair->ptPr());
     matched_->Fill(pair->ptPr(), pair->etaPr(), centBin);
   }
+
+    // testing 
+  // ------------------------------------
+  next_match.Reset();
+
+  while ((pair = (StMiniMcPair*) next_match())) {
+    if (event_->nUncorrectedPrimaries() < 470)
+      break;
+    if (pair->parentGeantId() != 0)
+      continue;
+    if (pair->dcaGl() > 2.0)
+      continue;
+    if (pair->fitPts() + 1 < 20)
+      continue;
+    if (((double)pair->fitPts() + 1.0) / ((double)pair->pairPossibleFitPts() + 1.0) < 0.52)
+      continue;
+      test_mc_->Fill(track->ptMc());
+  }
+
+  // ------------------------------------
+  // end testing
   
   nMCvsMatched_->Fill(count_mc, count_pair);
   
@@ -182,6 +224,15 @@ Int_t StEfficiencyMakerLite::Finish() {
   
   mc_->Write();
   matched_->Write();
+
+  // testing
+  // -------------------
+  test_ref_->Write();
+  test_mc_->Write();
+  test_match_->Write();
+  // -------------------
+  // end testing
+
   mcPtvsmatchPt_->Write();
   nMCvsMatched_->Write();
   refcent_->Write();
@@ -222,7 +273,18 @@ int StEfficiencyMakerLite::InitOutput() {
                      cent_axis_.nBins, cent_axis_.low, cent_axis_.high);
   mc_->Sumw2();
   matched_->Sumw2();
-  
+
+  // testing
+  // ----------------------------------------------------------
+  test_mc_ = new TH1D("testmc", ";p_{T}", 50, 0, 5.0);
+  test_mc_->Sumw2();
+  test_match_ = new TH1D("testmatch", ";p_{T}", 50, 0, 5.0);
+  test_match_->Sumw2();
+  test_ref_ = new TH1D("testref", ";refmult", 100, 0, 1000);
+  test_ref_->Sumw2();
+  // ----------------------------------------------------------
+  // end testing
+
   mcPtvsmatchPt_ = new TH3D("mcptvsmatchptvseta", ";mc p_{T};match p_{T};#eta", pt_axis_.nBins,
                             pt_axis_.low, pt_axis_.high, pt_axis_.nBins, pt_axis_.low, pt_axis_.high,
                             cent_axis_.nBins, cent_axis_.low, cent_axis_.high);
