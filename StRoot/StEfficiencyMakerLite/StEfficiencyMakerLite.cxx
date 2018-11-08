@@ -202,7 +202,7 @@ Int_t StEfficiencyMakerLite::Make() {
       continue;
     if (pair->fitPts() + 1 < 20)
       continue;
-    if (((double)pair->fitPts() + 1.0) / ((double)pair->pairPossibleFitPts() + 1.0) < 0.52)
+    if (((double)pair->fitPts() + 1.0) / ((double)pair->nPossiblePts() + 1.0) < 0.52)
       continue;
       test_mc_->Fill(track->ptMc());
   }
