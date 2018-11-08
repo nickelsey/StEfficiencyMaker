@@ -198,7 +198,7 @@ Int_t StEfficiencyMakerLite::Make() {
       break;
     if (pair->parentGeantId() != 0)
       continue;
-    if (pair->dcaGl() > 2.0)
+    if (pair->dcaGl() > 1.0)
       continue;
     if (pair->fitPts() + 1 < 20)
       continue;
