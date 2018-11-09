@@ -124,6 +124,8 @@ Int_t StEfficiencyMakerLite::Make() {
     
     if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
+
+    std::cout << "primaries: " << track->nAssocPr() << "\n";
     
     geant_id_embed_->Fill(track->geantId());
     
@@ -206,8 +208,6 @@ Int_t StEfficiencyMakerLite::Make() {
       continue;
     if (pair->commonFrac() < 0.9)
       continue;
-
-    std::cout << "contam?: " << pair->isBestContam() << "\n";
     
     test_match_->Fill(pair->ptPr());
   }
