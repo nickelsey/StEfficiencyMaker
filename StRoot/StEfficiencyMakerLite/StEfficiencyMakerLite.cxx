@@ -124,8 +124,6 @@ Int_t StEfficiencyMakerLite::Make() {
     
     if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
       continue;
-
-    std::cout << "primaries: " << track->nAssocPr() << "\n";
     
     geant_id_embed_->Fill(track->geantId());
     
@@ -146,7 +144,10 @@ Int_t StEfficiencyMakerLite::Make() {
       break;
     if (track->parentGeantId() != 0)
       continue;
-      test_mc_->Fill(track->ptMc());
+    if (geant_ids_.size() && geant_ids_.find(track->geantId()) == geant_ids_.end())
+      continue;
+    
+    test_mc_->Fill(track->ptMc());
   }
 
   // ------------------------------------
@@ -158,14 +159,13 @@ Int_t StEfficiencyMakerLite::Make() {
   unsigned count_pair = 0;
   
   while ((pair = (StMiniMcPair*) next_match())) {
-
     int pairGeantId = pair->geantId();
     int parentGeantId = pair->parentGeantId();
     double globalDCA = pair->dcaGl();
     int pairFitPts = pair->fitPts() + 1;
     int pairPossibleFitPts = pair->nPossiblePts() + 1;
     double pairFitFrac = (double) pairFitPts / (double) pairPossibleFitPts;
-    
+
     if (parentGeantId != 0)
       continue;
     
@@ -205,8 +205,6 @@ Int_t StEfficiencyMakerLite::Make() {
     if (pair->fitPts() + 1 < 20)
       continue;
     if (((double)pair->fitPts() + 1.0) / ((double)pair->nPossiblePts() + 1.0) < 0.52)
-      continue;
-    if (pair->commonFrac() < 0.9)
       continue;
     
     test_match_->Fill(pair->ptPr());
