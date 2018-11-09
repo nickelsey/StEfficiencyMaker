@@ -204,7 +204,12 @@ Int_t StEfficiencyMakerLite::Make() {
       continue;
     if (((double)pair->fitPts() + 1.0) / ((double)pair->nPossiblePts() + 1.0) < 0.52)
       continue;
-      test_match_->Fill(pair->ptPr());
+    if (pair->CommonFrac() < 0.9)
+      continue;
+
+    std::cout << "contam?: " << pair->isBestContam() << "\n";
+    
+    test_match_->Fill(pair->ptPr());
   }
 
   // ------------------------------------
