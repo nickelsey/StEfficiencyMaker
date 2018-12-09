@@ -105,17 +105,17 @@ Int_t StEfficiencyMakerLite::Make() {
   else if (refmult > 270)
     centBin = 2;
   else if (refmult > 190)
-    centbin = 3;
+    centBin = 3;
   else if (refmult > 125)
-    centbin = 4;
+    centBin = 4;
   else if (refmult > 75)
-    centbin = 5;
+    centBin = 5;
   else if (refmult > 42)
-    centbin = 6;
+    centBin = 6;
   else if (refmult > 21)
-    centbin = 7;
+    centBin = 7;
   else if (refmult > 10)
-    centbin = 8;
+    centBin = 8;
   
   // testing
   // ------------------------
