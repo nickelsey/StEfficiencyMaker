@@ -40,7 +40,7 @@ int StEfficiencyMakerLite::Init() {
 
 void StEfficiencyMakerLite::SetDefaultAxes() {
   cent_axis_ = axisDef(9, 0, 9);
-  pt_axis_   = axisDef(100, 0.0, 10.0);
+  pt_axis_   = axisDef(200, 0.0, 10.0);
   eta_axis_  = axisDef(10, -1.0, 1.0);
 }
 
