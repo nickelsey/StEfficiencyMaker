@@ -53,7 +53,7 @@
 
  <SandBox installer="ZIP">
 	 <Package name="Efficiency_gen_&lib;">
-                <File>file:macros/produce_efficiency.cxx</File>
+                <File>file:StRoot/macros/produce_efficiency.cxx</File>
                 <File>file:libs/libStEfficiencyMaker.so</File>
          </Package>
  </SandBox>
