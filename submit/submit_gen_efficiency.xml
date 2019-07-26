@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--             STAR Collaboration - Nick Elsey             -->
+<!--
+
+ OUTDIR/tmplogs must be created before the script is submitted
+ 
+ To Use: Settings
+ 
+ mulist:     text file with list of muDst files
+ 
+ mclist:     text file with list of corresponding minimc files (does not
+             need to be in the same order as the MUFILE list, but it will be
+             significantly faster if it is)
+
+ geantid:    geant ID for MC tracks to accept
+ 
+ lib:        the library to use when reading MuDsts/minimcs
+ 
+ out:        target output directory
+
+ log:        target log directory
+
+ dca:        selected track dca max
+ nhit:       selected track nhit min
+ nhitfrac:   selected track nhit fraction min
+
+ -->
+
+<!-- <job fileListSyntax="xrootd" inputOrder="runnumber" splitBy="runnumber" maxEvents="15000" simulateSubmission="true"> -->
+<job>
+
+ <command>
+   
+    starver &lib;
+    
+    setenv NUMBER `wc -l &mulist; | cut -f1 -d' '`
+
+    root4star -q -b produce_efficiency.cxx\(1e9,\"\&mulist;\",\"\&mclist;\",\"$JOBID\",\&geantid;,\&dca;,\&nhit;,\&nhitfrac;,$NUMBER\)
+
+    mv $SCRATCH/*.root &out;/
+
+ </command>
+ 
+ <ResourceUsage>
+   <Times>
+     <MaxWallTime>1</MaxWallTime>
+   </Times>
+   <Memory>
+     <MinMemory>2500</MinMemory>
+   </Memory>
+ </ResourceUsage>
+
+ <SandBox installer="ZIP">
+	 <Package name="Efficiency_gen_&lib;">
+                <File>file:macros/produce_efficiency.cxx</File>
+                <File>file:libs/libStEfficiencyMaker.so</File>
+         </Package>
+ </SandBox>
+ 
+ <Generator>
+   <Location>./scheduler/report/</Location>
+   <ScriptLocation>./scheduler/csh/</ScriptLocation>
+   <ListLocation>./scheduler/list/</ListLocation>
+ </Generator>
+
+<stdout URL="file:&log;/$JOBID.log" />
+<stderr URL="file:&log;/$JOBID.err" />
+
+</job>
+
+
