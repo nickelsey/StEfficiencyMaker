@@ -6,4 +6,4 @@ mkdir -p scheduler/report
 mkdir -p scheduler/list
 mkdir -p scheduler/csh
 cp -r StRoot sandbox/
-cp -r macros/*cxx sandbox/
+cp -r StRoot/macros/*cxx sandbox/
