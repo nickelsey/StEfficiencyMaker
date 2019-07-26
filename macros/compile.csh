@@ -10,17 +10,11 @@ starver SL17d_embed
 
 echo "[i] Remove any existing libs"
 rm -v libStEfficiencyMaker.so
-rm -v StEfficiencyMaker.so
 rm -v libStEfficiencyMakerLite.so
-rm -v StEfficiencyMakerLite.so
 rm -v libs/libStEfficiencyMaker.so
-rm -v libs/StEfficiencyMaker.so
 rm -v libs/libStEfficiencyMakerLite.so
-rm -v libs/StEfficiencyMakerLite.so
 rm -v sandbox/libStEfficiencyMaker.so
-rm -v sandbox/StEfficiencyMaker.so
 rm -v sandbox/libStEfficiencyMakerLite.so
-rm -v sandbox/StEfficiencyMakerLite.so
 
 setenv CXXFLAGSNEW "-pipe -fPIC -Wall -Woverloaded-virtual -ansi -Wno-long-long -pthread -m32 -std=c++11"
 #LDFLAGS       += -m32
